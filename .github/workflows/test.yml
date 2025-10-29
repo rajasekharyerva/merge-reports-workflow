@@ -36,18 +36,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # 1. Checkout aggregator repo
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # 2. Download artifacts from Repo A workflow
       - name: Download Repo A Report
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: repo-a-report
           path: reports/repo-a
 
       # 3. Download artifacts from Repo B workflow
       - name: Download Repo B Report
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: repo-b-report
           path: reports/repo-b
@@ -56,8 +56,8 @@ jobs:
       - name: Merge JSON Reports
         run: |
           mkdir -p target/merged-reports
-          cp reports/repo-a/*.json target/merged-reports/
-          cp reports/repo-b/*.json target/merged-reports/
+          cp reports/repo-a/*.json target/merged-reports/ || echo "No reports from A"
+          cp reports/repo-b/*.json target/merged-reports/ || echo "No reports from B"
           echo "Reports copied to target/merged-reports"
 
       # 5. Generate consolidated HTML report using Maven plugin
@@ -66,7 +66,7 @@ jobs:
 
       # 6. Upload merged report as artifact
       - name: Upload Merged Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: merged-cucumber-report
           path: target/generated-report/
