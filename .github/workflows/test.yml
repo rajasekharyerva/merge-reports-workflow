@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Repo A Workflow
-        uses: peter-evans/workflow-dispatch@v1
+        uses: peter-evans/workflow-dispatch@v3
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           repository: rajasekharyerva/sample-workflow
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Repo B Workflow
-        uses: peter-evans/workflow-dispatch@v1
+        uses: peter-evans/workflow-dispatch@v3
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           repository: rajasekharyerva/sample-workflow-2
