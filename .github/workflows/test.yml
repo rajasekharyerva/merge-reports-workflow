@@ -12,7 +12,7 @@ jobs:
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.workflow-token  }}" \
             https://api.github.com/repos/rajasekharyerva/sample-workflow/actions/dispatches \
             -d '{"ref":"main"}'
 
@@ -25,7 +25,7 @@ jobs:
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.workflow-token  }}" \
             https://api.github.com/repos/rajasekharyerva/sample-workflow-2/dispatches \
             -d '{"ref":"main"}'
   
