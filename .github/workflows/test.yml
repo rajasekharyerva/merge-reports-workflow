@@ -1,4 +1,6 @@
 name: Run All Tests and Merge Reports
+env:
+  WORKFLOW_TOKEN: ${{ secrets.token }}
 
 on:
   workflow_dispatch:   # manual trigger
@@ -10,7 +12,7 @@ jobs:
     steps:
       - name: Check if secret exists
         run: |
-          if [ -z "${{ secrets.token }}" ]; then
+          if [ -z "$WORKFLOW_TOKEN" ]; then
             echo "Secret is empty or not set!"
           else
             echo "Secret is set (masked for security)"
