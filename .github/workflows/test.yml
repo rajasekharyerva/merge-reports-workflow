@@ -1,0 +1,72 @@
+name: Run All Tests and Merge Reports
+
+on:
+  workflow_dispatch:   # manual trigger
+
+jobs:
+  trigger-repo-a:
+    name: Trigger Repo A Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Repo A Workflow
+        uses: peter-evans/workflow-dispatch@v1
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          repository: rajasekharyerva/sample-workflow
+          workflow: test.yml
+          ref: main
+
+  trigger-repo-b:
+    name: Trigger Repo B Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Repo B Workflow
+        uses: peter-evans/workflow-dispatch@v1
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          repository: rajasekharyerva/sample-workflow-2
+          workflow: test.yml
+          ref: main
+
+  merge-reports:
+    name: Merge Reports
+    needs:
+      - trigger-repo-a
+      - trigger-repo-b
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout aggregator repo
+      - uses: actions/checkout@v3
+
+      # 2. Download artifacts from Repo A workflow
+      - name: Download Repo A Report
+        uses: actions/download-artifact@v3
+        with:
+          name: repo-a-report
+          path: reports/repo-a
+
+      # 3. Download artifacts from Repo B workflow
+      - name: Download Repo B Report
+        uses: actions/download-artifact@v3
+        with:
+          name: repo-b-report
+          path: reports/repo-b
+
+      # 4. Merge JSON reports
+      - name: Merge JSON Reports
+        run: |
+          mkdir -p target/merged-reports
+          cp reports/repo-a/*.json target/merged-reports/
+          cp reports/repo-b/*.json target/merged-reports/
+          echo "Reports copied to target/merged-reports"
+
+      # 5. Generate consolidated HTML report using Maven plugin
+      - name: Generate HTML Report
+        run: mvn verify -DskipTests=true
+
+      # 6. Upload merged report as artifact
+      - name: Upload Merged Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: merged-cucumber-report
+          path: target/generated-report/
