@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Check if secret exists
         run: |
-          if [ -z "${{ secrets.WORKFLOW_TOKEN }}" ]; then
+          if [ -z "${{ secrets.token }}" ]; then
             echo "Secret is empty or not set!"
           else
             echo "Secret is set (masked for security)"
@@ -30,7 +30,7 @@ jobs:
     steps:
       - name: Check if secret exists
         run: |
-          if [ -z "${{ secrets.WORKFLOW_TOKEN }}" ]; then
+          if [ -z "${{ secrets.token }}" ]; then
             echo "Secret is empty or not set!"
           else
             echo "Secret is set (masked for security)"
