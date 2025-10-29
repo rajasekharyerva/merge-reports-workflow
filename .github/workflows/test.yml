@@ -14,7 +14,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: token ${{ secrets.token }}" \
             https://api.github.com/repos/rajasekharyerva/sample-workflow/actions/workflows/test.yml/dispatches \
-            -d '{"ref":"main"}'
+            -d '{\"ref\":\"main\"}'
 
 
   trigger-repo-b:
@@ -27,7 +27,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: token ${{ secrets.token }}" \
             https://api.github.com/repos/rajasekharyerva/sample-workflow-2/actions/workflows/test.yml/dispatches \
-            -d '{"ref":"main"}'
+            -d '{\"ref\":\"main\"}'
   
 
   merge-reports:
