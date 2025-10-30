@@ -56,18 +56,28 @@ jobs:
       - uses: actions/checkout@v4
 
       # 2. Download artifacts from Repo A workflow
-      - name: Download Repo A Report
-        uses: actions/download-artifact@v4
-        with:
-          name: repo-a-report
-          path: reports/repo-a
+      - name: Download artifacts from Repo A
+        run: |
+          curl -H "Authorization: token $WORKFLOW_TOKEN" \
+               -H "Accept: application/vnd.github+json" \
+               https://api.github.com/repos/rajasekharyerva/sample-workflow/actions/artifacts \
+               | jq -r '.artifacts[0].archive_download_url' \
+               | xargs -I {} curl -L -o repo-a-artifacts.zip \
+                   -H "Authorization: token $WORKFLOW_TOKEN" {}
+          unzip repo-a-artifacts.zip -d reports/repo-a
+      
 
       # 3. Download artifacts from Repo B workflow
-      - name: Download Repo B Report
-        uses: actions/download-artifact@v4
-        with:
-          name: repo-b-report
-          path: reports/repo-b
+      - name: Download artifacts from Repo B
+        run: |
+          curl -H "Authorization: token $WORKFLOW_TOKEN" \
+               -H "Accept: application/vnd.github+json" \
+               https://api.github.com/repos/rajasekharyerva/sample-workflow-2/actions/artifacts \
+               | jq -r '.artifacts[0].archive_download_url' \
+               | xargs -I {} curl -L -o repo-b-artifacts.zip \
+                   -H "Authorization: token $WORKFLOW_TOKEN" {}
+          unzip repo-b-artifacts.zip -d reports/repo-b
+      
 
       # 4. Merge JSON reports
       - name: Merge JSON Reports
