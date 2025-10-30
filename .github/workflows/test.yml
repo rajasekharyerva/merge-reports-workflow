@@ -82,12 +82,20 @@ jobs:
       
 
       # 4. Merge JSON reports
-      - name: Merge JSON Reports
+      - name: Merge Reports
         run: |
           mkdir -p target/merged-reports
-          cp reports/repo-a/*.json target/merged-reports/ || echo "No reports from A"
-          cp reports/repo-b/*.json target/merged-reports/ || echo "No reports from B"
-          echo "Reports copied to target/merged-reports"
+
+          # Copy JSON reports
+          cp reports/repo-a/*.json target/merged-reports/ 2>/dev/null || echo "No JSON reports from Repo A"
+          cp reports/repo-b/*.json target/merged-reports/ 2>/dev/null || echo "No JSON reports from Repo B"
+
+          # Copy HTML reports
+          cp reports/repo-a/*.html target/merged-reports/ 2>/dev/null || echo "No HTML reports from Repo A"
+          cp reports/repo-b/*.html target/merged-reports/ 2>/dev/null || echo "No HTML reports from Repo B"
+
+          echo "✅ Reports copied to target/merged-reports"
+      
 
       # 5. Generate consolidated HTML report using Maven plugin
       - name: Generate HTML Report
