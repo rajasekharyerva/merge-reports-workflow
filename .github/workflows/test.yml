@@ -58,6 +58,7 @@ jobs:
       # 2. Download artifacts from Repo A workflow
       - name: Download artifacts from Repo A
         run: |
+          mkdir -p reports/repo-a
           curl -H "Authorization: token $WORKFLOW_TOKEN" \
                -H "Accept: application/vnd.github+json" \
                https://api.github.com/repos/rajasekharyerva/sample-workflow/actions/artifacts \
@@ -70,6 +71,7 @@ jobs:
       # 3. Download artifacts from Repo B workflow
       - name: Download artifacts from Repo B
         run: |
+          mkdir -p reports/repo-a
           curl -H "Authorization: token $WORKFLOW_TOKEN" \
                -H "Accept: application/vnd.github+json" \
                https://api.github.com/repos/rajasekharyerva/sample-workflow-2/actions/artifacts \
